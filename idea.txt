@@ -1,0 +1,1 @@
+idea: write a super fast web server in rust and then port it to python
