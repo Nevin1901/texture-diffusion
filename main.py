@@ -21,16 +21,23 @@ app = Flask(__name__)
 def index():
     args = request.args
     text = args.get("name")
+    samples = args.get("samples")
+
+    if samples is None:
+        samples = 1
+
+    print(samples)
     print(text)
     print("generating")
     with autocast("cuda"):
-        image = pipe(text, guidance_scale=7.5)["sample"][0]
+        image = pipe(text, guidance_scale=7.5, height=512, width=512)["sample"][0]
         # print(image)
         # print(dir(image))
         print("saving")
         image.save(f"{text}.png")
 
     return send_file(f"{text}.png", mimetype="image/png")
+
 
 
 if __name__ == "__main__":
@@ -66,3 +73,4 @@ if __name__ == "__main__":
     print("done")
 
     app.run()
+
